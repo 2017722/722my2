@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>🎉 我家来客人啦 · 互动小站</title>
+    <!-- 字体与图标库 (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f9f3e8 0%, #ffe9d6 100%);
+            min-height: 100vh;
+            padding: 1.5rem 1rem 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-card {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 248, 235, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 56px 56px 40px 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08);
+            padding: 2rem 2rem 2.5rem;
+            border: 1px solid rgba(255, 215, 175, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #5e3a2b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            letter-spacing: -0.5px;
+            border-bottom: 3px dashed #e7c9b0;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.8rem;
+        }
+
+        h1 i {
+            color: #d68b5c;
+            font-size: 2.2rem;
+        }
+
+        .subhead {
+            font-size: 1.1rem;
+            color: #7a5a47;
+            background: #f4e3d6;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 1.8rem;
+            font-weight: 500;
+            box-shadow: inset 0 1px 4px rgba(255,255,255,0.6);
+        }
+
+        /* 网格互动区 — 10+ 功能 */
+        .interact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .fun-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.3rem 0.8rem;
+            text-align: center;
+            box-shadow: 0 6px 14px rgba(110, 70, 50, 0.08);
+            transition: all 0.25s ease;
+            border: 1px solid #f0dbcb;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            background: rgba(255, 250, 242, 0.7);
+        }
+
+        .fun-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 28px rgba(160, 100, 70, 0.15);
+            background: #fffbf5;
+            border-color: #dbb8a0;
+        }
+
+        .fun-card i {
+            font-size: 2.3rem;
+            color: #b87c5a;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .fun-card span {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #4f3426;
+            margin-top: 4px;
+        }
+
+        .fun-card .badge {
+            background: #dbb8a0;
+            color: #2f1e15;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        /* 反馈 & 状态区 */
+        .feedback-area {
+            background: #fcf3ea;
+            border-radius: 40px;
+            padding: 1.5rem 1.8rem;
+            margin: 1.8rem 0 1.2rem;
+            border-left: 8px solid #dba27b;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        #feedbackMessage {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #3d2a1e;
+            min-height: 3.6rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        #feedbackMessage i {
+            color: #b87c5a;
+            font-size: 1.8rem;
+            width: 2.4rem;
+            text-align: center;
+        }
+
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0 0.8rem;
+        }
+
+        .action-btn {
+            background: #f0dfd2;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #3d2a1e;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+            transition: all 0.15s;
+            border: 1px solid #e6cdbb;
+            cursor: pointer;
+        }
+
+        .action-btn i {
+            font-size: 1.2rem;
+            color: #9d6f53;
+        }
+
+        .action-btn:hover {
+            background: #e7cdbb;
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px rgba(100, 60, 30, 0.1);
+        }
+
+        .action-btn.primary {
+            background: #c79a7c;
+            border-color: #b28262;
+            color: #2f1c12;
+        }
+
+        .action-btn.primary i {
+            color: #4d2e1d;
+        }
+
+        .action-btn.primary:hover {
+            background: #b88766;
+        }
+
+        /* 计数器 + 额外互动 */
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0 0.5rem;
+            background: #efddcf;
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            color: #2f1e15;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .stat-item i {
+            font-size: 1.4rem;
+            color: #a57253;
+        }
+
+        .guest-special {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2rem;
+            margin: 2rem 0 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 2px dotted #dec4b2;
+        }
+
+        .guest-special .fun-card {
+            min-width: 110px;
+            flex: 1 0 auto;
+            max-width: 180px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .main-card { padding: 1.5rem 1rem; }
+            h1 { font-size: 2rem; }
+            .interact-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+            .fun-card { padding: 1rem 0.4rem; }
+            .fun-card i { font-size: 1.8rem; }
+            #feedbackMessage { font-size: 1rem; }
+        }
+
+        /* 小彩蛋样式 */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            z-index: 999;
+            border-radius: 2px;
+            pointer-events: none;
+            animation: dropConfetti 2.5s ease-out forwards;
+        }
+
+        @keyframes dropConfetti {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translateY(90vh) rotate(720deg) scale(0.2); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-card" id="appContainer">
+    <h1>
+        <i class="fas fa-people-arrows"></i> 
+        欢迎来我家·互动派对
+        <span style="font-size: 1rem; margin-left: auto; background: #dbb8a0; padding: 0.1rem 1rem; border-radius: 40px; color: #2b1a10;">✨ 10+ 互动</span>
+    </h1>
+    <div class="subhead">
+        <i class="fas fa-hand-peace" style="margin-right: 8px;"></i> 点击卡片 · 惊喜不断
+    </div>
+
+    <!-- 核心互动网格 (12项) -->
+    <div class="interact-grid" id="interactGrid">
+        <div class="fun-card" data-action="greet"><i class="fas fa-hand-sparkles"></i><span>👋 打招呼</span><span class="badge">热情</span></div>
+        <div class="fun-card" data-action="clap"><i class="fas fa-hands"></i><span>👏 掌声</span><span class="badge">气氛</span></div>
+        <div class="fun-card" data-action="confetti"><i class="fas fa-star"></i><span>🎊 撒花</span><span class="badge">庆祝</span></div>
+        <div class="fun-card" data-action="mood"><i class="fas fa-face-smile"></i><span>😊 心情投票</span><span class="badge">互动</span></div>
+        <div class="fun-card" data-action="snack"><i class="fas fa-cookie-bite"></i><span>🍪 零食推荐</span><span class="badge">吃货</span></div>
+        <div class="fun-card" data-action="music"><i class="fas fa-music"></i><span>🎵 播放BGM</span><span class="badge">氛围</span></div>
+        <div class="fun-card" data-action="joke"><i class="fas fa-face-grin-tears"></i><span>😂 冷笑话</span><span class="badge">幽默</span></div>
+        <div class="fun-card" data-action="compliment"><i class="fas fa-heart"></i><span>💖 夸夸</span><span class="badge">暖心</span></div>
+        <div class="fun-card" data-action="dance"><i class="fas fa-drumstick-bite"></i><span>🕺 魔性舞</span><span class="badge">欢乐</span></div>
+        <div class="fun-card" data-action="drink"><i class="fas fa-wine-glass"></i><span>🍹 特调饮品</span><span class="badge">招待</span></div>
+        <div class="fun-card" data-action="photo"><i class="fas fa-camera"></i><span>📸 合影留念</span><span class="badge">纪念</span></div>
+        <div class="fun-card" data-action="game"><i class="fas fa-gamepad"></i><span>🎮 猜拳</span><span class="badge">小游戏</span></div>
+    </div>
+
+    <!-- 反馈消息 -->
+    <div class="feedback-area">
+        <div id="feedbackMessage">
+            <i class="fas fa-comment-dots"></i>
+            <span id="messageText">点击上面的卡片，开始互动吧 🎈</span>
+        </div>
+    </div>
+
+    <!-- 辅助操作栏 -->
+    <div class="action-bar">
+        <button class="action-btn" id="resetBtn"><i class="fas fa-undo-alt"></i> 重置状态</button>
+        <button class="action-btn primary" id="surpriseBtn"><i class="fas fa-gift"></i> 惊喜彩蛋 🎁</button>
+        <button class="action-btn" id="countBtn"><i class="fas fa-hashtag"></i> 互动计数</button>
+    </div>
+
+    <!-- 统计 & 特殊互动 (额外功能) -->
+    <div class="stats">
+        <span class="stat-item"><i class="fas fa-hand-peace"></i> 互动次数: <strong id="interactCounter">0</strong></span>
+        <span class="stat-item"><i class="fas fa-smile"></i> 心情: <span id="moodDisplay">😐 未投票</span></span>
+        <span class="stat-item" id="guestMode"><i class="fas fa-user-friends"></i> 客人: <span id="guestName">✨ 好朋友</span></span>
+    </div>
+
+    <!-- 特殊的额外互动: 换客人 & 音乐控制 & 小游戏结果 -->
+    <div class="guest-special">
+        <div class="fun-card" id="changeGuestBtn"><i class="fas fa-user-plus"></i><span>👤 换客人</span><span class="badge">自定义</span></div>
+        <div class="fun-card" id="toggleMusicBtn"><i class="fas fa-play-circle"></i><span>🔊 音乐开关</span><span class="badge">BGM</span></div>
+        <div class="fun-card" id="gameResultBtn"><i class="fas fa-dice"></i><span>🎲 猜拳结果</span><span class="badge">随机</span></div>
+        <div class="fun-card" id="weatherBtn"><i class="fas fa-cloud-sun"></i><span>☀️ 今日天气</span><span class="badge">小贴士</span></div>
+    </div>
+
+    <!-- 底部声明 -->
+    <div style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #9e7b67; opacity: 0.8;">
+        <i class="fas fa-crown"></i> 为客人准备的互动小站 · 10+ 玩法
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ---------- 核心数据 ----------
+        let interactCount = 0;                // 互动计数
+        let currentMood = '😐 未投票';        
+        let guestName = '✨ 好朋友';
+        let bgmPlaying = false;
+        let bgmInterval = null;
+        const feedback = document.getElementById('messageText');
+        const counterSpan = document.getElementById('interactCounter');
+        const moodSpan = document.getElementById('moodDisplay');
+        const guestNameSpan = document.getElementById('guestName');
+
+        // 更新反馈 + 计数器 (每次互动调用)
+        function updateFeedback(msg, icon = 'fa-comment-dots') {
+            feedback.innerText = msg;
+            const iconElem = document.querySelector('#feedbackMessage i');
+            if (iconElem) {
+                iconElem.className = `fas ${icon}`;
+            }
+            // 增加互动次数
+            interactCount++;
+            counterSpan.innerText = interactCount;
+            // 同时更新心情显示 (由外部调用时额外处理)
+        }
+
+        // 重置互动计数 (但不重置心情等)
+        function resetCounter() {
+            interactCount = 0;
+            counterSpan.innerText = '0';
+            updateFeedback('已重置互动计数 ✨', 'fa-rotate');
+        }
+
+        // ----- 各互动功能 (12+ 额外) -----
+        const actionMap = {
+            'greet': () => {
+                const msgs = ['👋 你好呀！欢迎来我家做客！', '👋 嗨～ 快请坐，别客气！', '👋 见到你真开心！'];
+                updateFeedback(msgs[Math.floor(Math.random() * msgs.length)], 'fa-hand-peace');
+            },
+            'clap': () => {
+                updateFeedback('👏 啪啪啪～ 掌声响起来！ 气氛搞起来！', 'fa-hands');
+            },
+            'confetti': () => {
+                updateFeedback('🎊 撒花！ 五彩纸屑飘落～ 庆祝！', 'fa-star');
+                launchConfetti(30);
+            },
+            'mood': () => {
+                const moods = ['😊 开心', '😎 酷', '🤩 超棒', '🥳 派对', '😌 放松'];
+                const picked = moods[Math.floor(Math.random() * moods.length)];
+                currentMood = picked;
+                moodSpan.innerText = picked;
+                updateFeedback(`心情投票: ${picked} 谢谢你的分享！`, 'fa-face-smile');
+            },
+            'snack': () => {
+                const snacks = ['🍪 巧克力曲奇', '🧁 纸杯蛋糕', '🍩 甜甜圈', '🥨 蝴蝶酥', '🍿 爆米花'];
+                updateFeedback(`推荐零食: ${snacks[Math.floor(Math.random() * snacks.length)]} ～ 请慢用！`, 'fa-cookie-bite');
+            },
+            'music': () => {
+                if (!bgmPlaying) {
+                    // 模拟BGM (通过小音效或视觉反馈)
+                    bgmPlaying = true;
+                    updateFeedback('🎵 音乐响起～ 现在播放: 轻快爵士', 'fa-music');
+                    // 模拟音量条闪烁 (只是个趣味)
+                    document.querySelector('#toggleMusicBtn i').className = 'fas fa-pause-circle';
+                    if (bgmInterval) clearInterval(bgmInterval);
+                    bgmInterval = setInterval(() => {
+                        // 伪音乐律动：小变化
+                    }, 500);
+                } else {
+                    // 如果已经播放，再次点击提示
+                    updateFeedback('🎵 音乐正在播放中～ 可以按“音乐开关”暂停', 'fa-music');
+                }
+            },
+            'joke': () => {
+                const jokes = ['😂 为什么数学书总是很忧郁？ 因为里面有很多问题。', 
+                               '😂 为什么鸡蛋怕摔？ 因为它有“蛋壳”恐惧症。',
+                               '😂 鱼为什么喜欢穿西装？ 因为它们是“西”鱼。'];
+                updateFeedback(jokes[Math.floor(Math.random() * jokes.length)], 'fa-face-grin-tears');
+            },
+            'compliment': () => {
+                const compliments = ['💖 你的笑容让这个房间更温暖！', '💖 你今天的穿搭太有品味啦！', '💖 和你聊天总是那么愉快～'];
+                updateFeedback(compliments[Math.floor(Math.random() * compliments.length)], 'fa-heart');
+            },
+            'dance': () => {
+                const dances = ['🕺 魔性抖肩舞！ 左左右右～', '💃 即兴扭动！ 大家一起摇～', '🧑‍🎤 太空步滑起来！'];
+                updateFeedback(dances[Math.floor(Math.random() * dances.length)], 'fa-drumstick-bite');
+            },
+            'drink': () => {
+                const drinks = ['🍹 夏日莫吉托', '🥤 冰柠檬红茶', '🧋 珍珠奶茶', '🍸 橙子气泡水'];
+                updateFeedback(`特调饮品: ${drinks[Math.floor(Math.random() * drinks.length)]} 请享用！`, 'fa-wine-glass');
+            },
+            'photo': () => {
+                updateFeedback('📸 咔嚓！ 合影留念～ 茄子！ 这张照片一定很棒！', 'fa-camera');
+            },
+            'game': () => {
+                const results = ['✊ 石头', '✋ 布', '✌️ 剪刀'];
+                const player = results[Math.floor(Math.random() * 3)];
+                const cpu = results[Math.floor(Math.random() * 3)];
+                let win = '平局';
+                if (player !== cpu) {
+                    if ((player === '✊' && cpu === '✌️') || (player === '✋' && cpu === '✊') || (player === '✌️' && cpu === '✋')) {
+                        win = '你赢了 🎉';
+                    } else {
+                        win = '电脑赢了 🤖';
+                    }
+                }
+                updateFeedback(`🎮 你出: ${player} , 电脑出: ${cpu} → ${win}`, 'fa-gamepad');
+            }
+        };
+
+        // ----- 额外特殊互动 (客人功能) -----
+        function changeGuest() {
+            const names = ['👩 小美', '🧑 阿杰', '👨‍🦰 大陈', '👩‍🦱 莉莉', '🧔 托尼', '👧 小萌'];
+            guestName = names[Math.floor(Math.random() * names.length)];
+            guestNameSpan.innerText = guestName;
+            updateFeedback(`👋 现在家里来的是 ${guestName} ！ 欢迎～`, 'fa-user-plus');
+        }
+
+        function toggleMusic() {
+            if (bgmPlaying) {
+                bgmPlaying = false;
+                if (bgmInterval) clearInterval(bgmInterval);
+                document.querySelector('#toggleMusicBtn i').className = 'fas fa-play-circle';
+                updateFeedback('⏸️ 音乐已暂停', 'fa-volume-off');
+            } else {
+                bgmPlaying = true;
+                document.querySelector('#toggleMusicBtn i').className = 'fas fa-pause-circle';
+                updateFeedback('🎵 音乐继续播放～  enjoy!', 'fa-music');
+                if (bgmInterval) clearInterval(bgmInterval);
+                bgmInterval = setInterval(() => {}, 400);
+            }
+        }
+
+        function gameResultRandom() {
+            const results = ['✊ 石头 · 你赢了！', '✋ 布 · 平局', '✌️ 剪刀 · 再玩一次'];
+            updateFeedback(`🎲 猜拳结果: ${results[Math.floor(Math.random() * results.length)]}`, 'fa-dice');
+        }
+
+        function weatherTip() {
+            const tips = ['☀️ 晴天，适合出门散步', '⛅ 多云，气温适宜', '🌧️ 阵雨，记得带伞', '🌤️ 晴间多云，好天气！'];
+            updateFeedback(`🌤️ 今日天气: ${tips[Math.floor(Math.random() * tips.length)]}`, 'fa-cloud-sun');
+        }
+
+        // ----- 撒花效果 (彩蛋) -----
+        function launchConfetti(count = 25) {
+            const colors = ['#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590', '#b5838d'];
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                el.style.width = Math.random() * 8 + 6 + 'px';
+                el.style.height = Math.random() * 8 + 6 + 'px';
+                el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                el.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                el.style.animationDelay = Math.random() * 0.6 + 's';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 3500);
+            }
+        }
+
+        // 惊喜彩蛋 (组合功能)
+        function surpriseEgg() {
+            launchConfetti(50);
+            updateFeedback('🎁 惊喜彩蛋！ 撒花+欢乐+心情提升 ～ 🥳', 'fa-gift');
+            currentMood = '🤩 超开心';
+            moodSpan.innerText = currentMood;
+            // 额外变客人
+            changeGuest();
+        }
+
+        // ----- 绑定事件 (代理) -----
+        document.addEventListener('DOMContentLoaded', function() {
+            const grid = document.getElementById('interactGrid');
+            // 点击卡片
+            grid.addEventListener('click', function(e) {
+                const card = e.target.closest('.fun-card');
+                if (!card) return;
+                const action = card.dataset.action;
+                if (action && actionMap[action]) {
+                    actionMap[action]();
+                } else {
+                    // fallback
+                    updateFeedback('✨ 有趣的功能正在准备中...', 'fa-sparkles');
+                }
+            });
+
+            // 独立按钮
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                resetCounter();
+            });
+
+            document.getElementById('surpriseBtn').addEventListener('click', function() {
+                surpriseEgg();
+            });
+
+            document.getElementById('countBtn').addEventListener('click', function() {
+                updateFeedback(`📊 当前互动次数: ${interactCount} 次`, 'fa-hashtag');
+            });
+
+            // 特殊额外卡片
+            document.getElementById('changeGuestBtn').addEventListener('click', changeGuest);
+            document.getElementById('toggleMusicBtn').addEventListener('click', toggleMusic);
+            document.getElementById('gameResultBtn').addEventListener('click', gameResultRandom);
+            document.getElementById('weatherBtn').addEventListener('click', weatherTip);
+
+            // 额外: 点击客人名称可以改名 (小彩蛋)
+            guestNameSpan.addEventListener('dblclick', function() {
+                const newName = prompt('输入客人名字 (昵称):', guestName);
+                if (newName && newName.trim() !== '') {
+                    guestName = '✨ ' + newName.trim();
+                    guestNameSpan.innerText = guestName;
+                    updateFeedback(`👋 客人改名为: ${guestName}`, 'fa-user-edit');
+                }
+            });
+
+            // 初始化显示
+            guestNameSpan.innerText = guestName;
+            counterSpan.innerText = '0';
+            moodSpan.innerText = currentMood;
+        });
+    })();
+</script>
+</body>
+</html>
